@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">ZX Ventures</string>
+    <string name="delivery_address_title">Delivery Address</string>
+    <string name="action_settings">Settings</string>
+    <string name="loading">Loading</string>
+    <string name="main_screen_address_hint">Address</string>
+    <string name="main_screen_title">Where are you?</string>
+    <string name="main_screen_subtitle">I will use your address to find the fastest delivery option available in your area.</string>
+
+    <!-- Address format -->
+    <string name="address_output_string">%1$s %2$s %3$s</string>
+    <!-- Latitude, longitude format -->
+    <string name="latitude_longitude">%1$.8f, %2$.8f</string>
+</resources>
