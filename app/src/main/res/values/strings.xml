@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">ZX Ventures</string>
-    <string name="delivery_address_title">Delivery Address</string>
+    <string name="actionbar_main_activity_title">Delivery Address</string>
+    <string name="actionbar_products_activity_title">Products List</string>
     <string name="action_settings">Settings</string>
     <string name="loading">Loading</string>
     <string name="main_screen_address_hint">Address</string>

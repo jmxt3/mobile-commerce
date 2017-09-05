@@ -61,7 +61,7 @@ public class ProductsListActivity extends AppCompatActivity {
             Log.e(TAG, "initToolbar", e);
         }
 
-        toolbar.setTitle(getString(R.string.app_name));
+        toolbar.setTitle(getString(R.string.actionbar_products_activity_title));
     }
 
     @Override

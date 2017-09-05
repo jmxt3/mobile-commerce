@@ -24,7 +24,7 @@
 
         <activity
             android:name=".activities.MainActivity"
-            android:label="@string/delivery_address_title"
+            android:label="@string/actionbar_main_activity_title"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
