@@ -23,27 +23,28 @@ public class ProductsListActivity extends AppCompatActivity {
     private ViewPager pager;
     private MyPagerAdapter adapter;
 
-    private Toolbar toolbar;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_products_list);
 
         initToolbar();
-
-        tabs = (PagerSlidingTabStrip) findViewById(R.id.tabs);
-        pager = (ViewPager) findViewById(R.id.pager);
         adapter = new MyPagerAdapter(getSupportFragmentManager());
+        initPager();
+        initTabs();
+    }
 
+    private void initPager() {
+        pager = (ViewPager) findViewById(R.id.pager);
         pager.setAdapter(adapter);
-
         final int pageMargin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4, getResources()
                 .getDisplayMetrics());
         pager.setPageMargin(pageMargin);
+    }
 
+    private void initTabs() {
+        tabs = (PagerSlidingTabStrip) findViewById(R.id.tabs);
         tabs.setViewPager(pager);
-
         tabs.setIndicatorColor(getColor(R.color.colorAccent));
         tabs.setTextColor(Color.WHITE);
         tabs.setDividerColor(Color.WHITE);
@@ -51,17 +52,16 @@ public class ProductsListActivity extends AppCompatActivity {
 
     private void initToolbar() {
 
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         try {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
-        }catch (NullPointerException e){
+            getSupportActionBar().setTitle(getString(R.string.actionbar_products_activity_title));
+        } catch (NullPointerException e) {
             Log.e(TAG, "initToolbar", e);
         }
-
-        toolbar.setTitle(getString(R.string.actionbar_products_activity_title));
     }
 
     @Override
@@ -70,10 +70,10 @@ public class ProductsListActivity extends AppCompatActivity {
         return true;
     }
 
-    public class MyPagerAdapter extends FragmentPagerAdapter {
+    private class MyPagerAdapter extends FragmentPagerAdapter {
 
-        private final String[] TITLES = { "Categories", "Home", "Top Paid", "Top Free", "Top Grossing", "Top New Paid",
-                "Top New Free", "Trending" };
+        private final String[] TITLES = {"Categories", "Home", "Top Paid", "Top Free", "Top Grossing", "Top New Paid",
+                "Top New Free", "Trending"};
 
         public MyPagerAdapter(FragmentManager fm) {
             super(fm);
