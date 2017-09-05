@@ -5,10 +5,17 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.places.AutocompleteFilter;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
+import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 import com.zxventures.beer.R;
+import com.zxventures.beer.utils.Log;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements PlaceSelectionListener{
 
     private static final String TAG = MainActivity.class.getSimpleName();
 
@@ -19,6 +26,16 @@ public class MainActivity extends AppCompatActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
+                getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
+
+        AutocompleteFilter typeFilter = new AutocompleteFilter.Builder()
+                .setTypeFilter(AutocompleteFilter.TYPE_FILTER_ADDRESS)
+                .build();
+        autocompleteFragment.setFilter(typeFilter);
+
+        autocompleteFragment.setOnPlaceSelectedListener(this);
     }
 
 
@@ -42,6 +59,25 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onPlaceSelected(Place place) {
+        Log.i(TAG, "Place: " + place.getName());
+        Log.i(TAG, "Lat: " + place.getLatLng().latitude);
+        Log.i(TAG, "Lgt: " + place.getLatLng().longitude);
+
+        Toast.makeText(MainActivity.this, "Lat: " + place.getLatLng().latitude + "\nLgt: "+ place.getLatLng().longitude,
+                Toast.LENGTH_SHORT).show();
+
+    }
+
+    @Override
+    public void onError(Status status) {
+        Log.e(TAG, "Ocorreu um erro: " + status);
+
+        Toast.makeText(MainActivity.this, "Place selection failed: " + status.getStatusMessage(),
+                Toast.LENGTH_SHORT).show();
     }
 
 }
