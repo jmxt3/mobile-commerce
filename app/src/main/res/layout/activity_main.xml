@@ -27,26 +27,6 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <TextView
-        android:id="@+id/progress_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/progress"
-        android:layout_centerInParent="true"
-        android:text="@string/loading"
-        android:textColor="@android:color/black"
-        android:textSize="14sp"
-        android:visibility="gone" />
-
-    <!-- Login progress -->
-    <ProgressBar
-        android:id="@+id/progress"
-        style="?android:attr/progressBarStyleLarge"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:visibility="gone" />
-
     <LinearLayout
         android:id="@+id/container"
         android:layout_width="match_parent"

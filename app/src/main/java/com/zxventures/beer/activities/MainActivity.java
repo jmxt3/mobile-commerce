@@ -1,5 +1,6 @@
 package com.zxventures.beer.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -69,6 +70,9 @@ public class MainActivity extends AppCompatActivity implements PlaceSelectionLis
 
         Toast.makeText(MainActivity.this, "Lat: " + place.getLatLng().latitude + "\nLgt: "+ place.getLatLng().longitude,
                 Toast.LENGTH_SHORT).show();
+
+        startActivity(new Intent(this,
+                ProductsListActivity.class).setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP));
 
     }
 
