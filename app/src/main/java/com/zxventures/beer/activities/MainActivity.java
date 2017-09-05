@@ -2,23 +2,36 @@ package com.zxventures.beer.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.apollographql.apollo.ApolloCall;
+import com.apollographql.apollo.api.Response;
+import com.apollographql.apollo.exception.ApolloException;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.AutocompleteFilter;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
 import com.google.android.gms.location.places.ui.PlaceSelectionListener;
+import com.zxventures.beer.AllCategoriesSearchQuery;
+import com.zxventures.beer.GlobalApp;
 import com.zxventures.beer.R;
 import com.zxventures.beer.utils.Log;
 
-public class MainActivity extends AppCompatActivity implements PlaceSelectionListener{
+import java.util.List;
+
+import javax.annotation.Nonnull;
+
+public class MainActivity extends AppCompatActivity implements PlaceSelectionListener {
 
     private static final String TAG = MainActivity.class.getSimpleName();
+    Handler uiHandler = new Handler(Looper.getMainLooper());
+    ApolloCall<AllCategoriesSearchQuery.Data> categoriesCall;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +50,8 @@ public class MainActivity extends AppCompatActivity implements PlaceSelectionLis
         autocompleteFragment.setFilter(typeFilter);
 
         autocompleteFragment.setOnPlaceSelectedListener(this);
+
+        fetchCategories();
     }
 
 
@@ -68,7 +83,7 @@ public class MainActivity extends AppCompatActivity implements PlaceSelectionLis
         Log.i(TAG, "Lat: " + place.getLatLng().latitude);
         Log.i(TAG, "Lgt: " + place.getLatLng().longitude);
 
-        Toast.makeText(MainActivity.this, "Lat: " + place.getLatLng().latitude + "\nLgt: "+ place.getLatLng().longitude,
+        Toast.makeText(MainActivity.this, "Lat: " + place.getLatLng().latitude + "\nLgt: " + place.getLatLng().longitude,
                 Toast.LENGTH_SHORT).show();
 
         startActivity(new Intent(this,
@@ -82,6 +97,40 @@ public class MainActivity extends AppCompatActivity implements PlaceSelectionLis
 
         Toast.makeText(MainActivity.this, "Place selection failed: " + status.getStatusMessage(),
                 Toast.LENGTH_SHORT).show();
+    }
+
+    ApolloCall.Callback<AllCategoriesSearchQuery.Data> dataCallback
+            = new ApolloCall.Callback<AllCategoriesSearchQuery.Data>() {
+        @Override
+        public void onResponse(@Nonnull Response<AllCategoriesSearchQuery.Data> response) {
+            Log.d(TAG, "onResponse start");
+            try {
+                final List<AllCategoriesSearchQuery.AllCategory> list = response.data().allCategory();
+                if (list != null) {
+                    for (int i = 0; i < list.size(); i++) {
+                        Log.i(TAG, list.get(i).title());
+                    }
+                }
+            } catch (NullPointerException e) {
+                Log.e(TAG, "onResponse error", e);
+            }
+        }
+
+        @Override
+        public void onFailure(@Nonnull ApolloException e) {
+            Log.e(TAG, e.getMessage(), e);
+        }
+    };
+
+    private void fetchCategories() {
+        Log.d(TAG, "fetchCategories");
+        final AllCategoriesSearchQuery feedQuery = AllCategoriesSearchQuery.builder()
+                .build();
+
+        categoriesCall = GlobalApp.getInstance().apolloClient()
+                .query(feedQuery);
+        categoriesCall.enqueue(dataCallback);
+
     }
 
 }
