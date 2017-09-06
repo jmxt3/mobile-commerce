@@ -7,6 +7,7 @@
     <string name="main_screen_address_hint">Address</string>
     <string name="main_screen_title">Where are you?</string>
     <string name="main_screen_subtitle">I will use your address to find the fastest delivery option available in your area.</string>
+    <string name="poc_not_found_error">Desculpe, não conseguimos encontrar nenhum vendedor neste endereço. Para fins de teste, digite "Rua Américo Brasiliense, São Paulo"</string>
 
     <!-- Address format -->
     <string name="address_output_string">%1$s %2$s %3$s</string>

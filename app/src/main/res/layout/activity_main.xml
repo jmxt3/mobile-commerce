@@ -27,7 +27,7 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -35,7 +35,28 @@
         android:padding="20dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
+        <!-- Login progress -->
+        <ProgressBar
+            android:id="@+id/progress"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:visibility="gone" />
+
         <TextView
+            android:id="@+id/progress_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/progress"
+            android:layout_centerInParent="true"
+            android:text="@string/loading"
+            android:textColor="@android:color/black"
+            android:textSize="14sp"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingBottom="10dp"
@@ -45,9 +66,11 @@
             android:textStyle="bold" />
 
         <TextView
+            android:id="@+id/subtitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingBottom="15dp"
+            android:layout_below="@+id/title"
             android:text="@string/main_screen_subtitle"
             android:textSize="16sp" />
 
@@ -55,7 +78,8 @@
             android:id="@+id/place_autocomplete_fragment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/subtitle"
             android:name="com.google.android.gms.location.places.ui.PlaceAutocompleteFragment" />
 
-    </LinearLayout>
+    </RelativeLayout>
 </android.support.design.widget.CoordinatorLayout>
