@@ -6,36 +6,54 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.TypedValue;
 
 import com.astuetz.PagerSlidingTabStrip;
+import com.zxventures.beer.GlobalApp;
 import com.zxventures.beer.R;
 import com.zxventures.beer.fragments.TabFragment;
+import com.zxventures.beer.models.PocModel;
 import com.zxventures.beer.utils.Log;
 
-public class ProductsListActivity extends AppCompatActivity {
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
+
+public class ProductsListActivity extends GlobalActivity {
 
     private static final String TAG = ProductsListActivity.class.getSimpleName();
 
-    private PagerSlidingTabStrip tabs;
     private ViewPager pager;
     private MyPagerAdapter adapter;
+    private PocModel pocModel = new PocModel();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_products_list);
 
-        initToolbar();
-        adapter = new MyPagerAdapter(getSupportFragmentManager());
-        initPager();
-        initTabs();
+        disposables.add(GlobalApp.getInstance()
+                .bus()
+                .toObservable()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(object -> {
+
+                    if (object instanceof PocModel) {
+                        pocModel = (PocModel) object;
+                        Log.w(TAG, "PocModel Received - "+pocModel.full_address);
+
+                        initToolbar();
+                        adapter = new MyPagerAdapter(getSupportFragmentManager());
+                        initPager();
+                        initTabs();
+                    }
+
+                }));
     }
 
     private void initPager() {
-        pager = (ViewPager) findViewById(R.id.pager);
+        pager = findViewById(R.id.pager);
         pager.setAdapter(adapter);
         final int pageMargin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4, getResources()
                 .getDisplayMetrics());

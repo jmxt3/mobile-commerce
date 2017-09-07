@@ -2,7 +2,6 @@ package com.zxventures.beer.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -37,10 +36,10 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
-public class MainActivity extends AppCompatActivity implements PlaceSelectionListener {
+public class MainActivity extends GlobalActivity implements PlaceSelectionListener {
 
     private static final String TAG = MainActivity.class.getSimpleName();
-    private PocModel pocModel;
+    private PocModel pocModel = new PocModel();
     private int processedCounter = 0;
     private ProgressBar mProgressBar;
     private TextView mProgressLabel;
@@ -167,8 +166,10 @@ public class MainActivity extends AppCompatActivity implements PlaceSelectionLis
                                         "\nLgt: " + pocModel.lgt,
                                 Toast.LENGTH_SHORT).show();
 
-                        startActivity(new Intent(MainActivity.this,
-                                ProductsListActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+                        GlobalApp.getInstance().bus().send(pocModel);
+
+                        startActivity(new Intent(MainActivity.this, ProductsListActivity.class)
+                                .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
                     });
                 }
             }
