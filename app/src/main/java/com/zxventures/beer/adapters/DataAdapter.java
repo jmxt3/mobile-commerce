@@ -16,7 +16,6 @@ import com.zxventures.beer.R;
 import com.zxventures.beer.models.ProductModel;
 import com.zxventures.beer.utils.ImageUtils;
 import com.zxventures.beer.utils.Log;
-import com.zxventures.beer.utils.NetworkUtils;
 
 import java.util.List;
 
