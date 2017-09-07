@@ -61,7 +61,7 @@ public class ProductsListActivity extends GlobalActivity {
     }
 
     private void initTabs() {
-        tabs = (PagerSlidingTabStrip) findViewById(R.id.tabs);
+        PagerSlidingTabStrip tabs = findViewById(R.id.tabs);
         tabs.setViewPager(pager);
         tabs.setIndicatorColor(getColor(R.color.colorAccent));
         tabs.setTextColor(Color.WHITE);
@@ -70,13 +70,13 @@ public class ProductsListActivity extends GlobalActivity {
 
     private void initToolbar() {
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         try {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
-            getSupportActionBar().setTitle(getString(R.string.actionbar_products_activity_title));
+            getSupportActionBar().setTitle(pocModel.tradingName);
         } catch (NullPointerException e) {
             Log.e(TAG, "initToolbar", e);
         }
@@ -90,26 +90,25 @@ public class ProductsListActivity extends GlobalActivity {
 
     private class MyPagerAdapter extends FragmentPagerAdapter {
 
-        private final String[] TITLES = {"Categories", "Home", "Top Paid", "Top Free", "Top Grossing", "Top New Paid",
-                "Top New Free", "Trending"};
-
-        public MyPagerAdapter(FragmentManager fm) {
+        MyPagerAdapter(FragmentManager fm) {
             super(fm);
         }
 
         @Override
         public CharSequence getPageTitle(int position) {
-            return TITLES[position];
+                int key = pocModel.categories.keyAt(position);
+            return pocModel.categories.get(key).title;
         }
 
         @Override
         public int getCount() {
-            return TITLES.length;
+            return pocModel.categories.size();
         }
 
         @Override
         public Fragment getItem(int position) {
-            return TabFragment.newInstance(position);
+            int key = pocModel.categories.keyAt(position);
+            return TabFragment.newInstance(position, pocModel.categories.get(key).products);
         }
 
     }

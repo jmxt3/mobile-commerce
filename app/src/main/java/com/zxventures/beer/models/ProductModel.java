@@ -2,6 +2,8 @@ package com.zxventures.beer.models;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
+
 /**
  * Created by joaopmmachete on 9/6/17.
  */

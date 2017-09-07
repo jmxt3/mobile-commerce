@@ -5,6 +5,7 @@ import android.util.SparseIntArray;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
@@ -13,7 +14,7 @@ import java.util.Set;
  * Created by joaopmmachete on 9/6/17.
  */
 
-public class PocModel {
+public class PocModel implements Serializable{
 
     @SerializedName("id")
     public int id;

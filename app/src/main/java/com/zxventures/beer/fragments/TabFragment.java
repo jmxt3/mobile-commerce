@@ -17,17 +17,21 @@
 package com.zxventures.beer.fragments;
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.TypedValue;
-import android.view.Gravity;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
-import android.widget.FrameLayout.LayoutParams;
-import android.widget.TextView;
 
+import com.google.gson.reflect.TypeToken;
+import com.zxventures.beer.GlobalApp;
 import com.zxventures.beer.R;
+import com.zxventures.beer.adapters.DataAdapter;
+import com.zxventures.beer.models.ProductModel;
+
+import java.util.List;
 
 /**
  * Created by joaopmmachete on 9/5/17.
@@ -35,36 +39,60 @@ import com.zxventures.beer.R;
 
 public class TabFragment extends Fragment {
 
+    private static final String TAG = TabFragment.class.getSimpleName();
     private static final String ARG_POSITION = "position";
+    public static final String ARG_PRODUCTS = "products";
 
-    public static TabFragment newInstance(int position) {
+    private List<ProductModel> products;
+    private int position;
+
+    public static TabFragment newInstance(int position, List<ProductModel> products) {
         TabFragment f = new TabFragment();
         Bundle b = new Bundle();
+        b.putString(ARG_PRODUCTS, GlobalApp.getInstance().getGson().toJson(products));
         b.putInt(ARG_POSITION, position);
         f.setArguments(b);
         return f;
     }
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        // Tell the framework to try to keep this fragment around
+        // during a configuration change.
+        setRetainInstance(true);
+
+        final Bundle bundle = this.getArguments();
+        if (bundle != null) {
+            this.position = bundle.getInt(ARG_POSITION);
+            //re-construct object from string
+            this.products = GlobalApp.getInstance().getGson().fromJson(bundle.getString(ARG_PRODUCTS),
+                    new TypeToken<List<ProductModel>>() {
+                    }.getType());
+        }
+
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+        //Inflate a diferent layout if Featured Tab
+        int layoutToInflate = this.position == 0 ? R.layout.fragment_featured_tab : R.layout.fragment_tab;
+        return inflater.inflate(layoutToInflate, container, false);
+    }
 
-        FrameLayout fl = new FrameLayout(getActivity());
-        fl.setLayoutParams(params);
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
-        final int margin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 8, getResources()
-                .getDisplayMetrics());
+        RecyclerView recyclerView = view.findViewById(R.id.grid);
+        recyclerView.setHasFixedSize(true);
+        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getActivity().getApplicationContext(), 2);
+        recyclerView.setLayoutManager(layoutManager);
 
-        TextView v = new TextView(getActivity());
-        params.setMargins(margin, margin, margin, margin);
-        v.setLayoutParams(params);
-        v.setLayoutParams(params);
-        v.setGravity(Gravity.CENTER);
-        v.setBackgroundResource(R.mipmap.background_card);
-        v.setText("CARD ");
+        DataAdapter adapter = new DataAdapter(getActivity().getApplicationContext(), this.products);
+        recyclerView.setAdapter(adapter);
 
-        fl.addView(v);
-        return fl;
     }
 }

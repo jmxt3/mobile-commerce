@@ -49,10 +49,11 @@ public class MainActivity extends GlobalActivity implements PlaceSelectionListen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        mProgressBar = (ProgressBar) findViewById(R.id.progress);
-        mProgressLabel = (TextView) findViewById(R.id.progress_label);
+        getSupportActionBar().setTitle(getString(R.string.actionbar_main_activity_title));
+        mProgressBar = findViewById(R.id.progress);
+        mProgressLabel = findViewById(R.id.progress_label);
 
         initPlaceAutoCompleteFragment();
     }
@@ -118,7 +119,7 @@ public class MainActivity extends GlobalActivity implements PlaceSelectionListen
         final PocCategorySearchQuery productQuery = PocCategorySearchQuery.builder()
                 .id(String.valueOf(pocIdToQuery))
                 .search("")
-                .categoryId(categoryIdToQuery) //TODO: BUG FOUND ON THE API, CATEGORIES NOT BEING FILTERING CORRETLY
+                .categoryId(categoryIdToQuery) //TODO: BUG FOUND ON THE API, CATEGORIES NOT BEING FILTERED CORRETLY
                 .build();
 
         ApolloCall<PocCategorySearchQuery.Data> productCall = GlobalApp.getInstance().apolloClient()
@@ -135,11 +136,22 @@ public class MainActivity extends GlobalActivity implements PlaceSelectionListen
                         for (Product product : responseProductsList) {
                             final CategoryModel temp = pocModel.categories.get(categoryIdToQuery);
                             if (temp != null) {
+
+                                String url = "";
+                                String price = "0";
+                                try {
+                                    if (product.productVariants().isEmpty() || product.productVariants().size()!=0) {
+                                        url = product.productVariants().get(0).imageUrl();
+                                        price = String.valueOf(product.productVariants().get(0).price());
+                                    }
+                                } catch (NullPointerException e) {
+                                    Log.e(TAG, product.productVariants().toString(),e);
+                                }
                                 temp.products.add(new ProductModel(
                                         Integer.valueOf(product.id()),
                                         product.title(),
-                                        product.productVariants().get(0).imageUrl(),
-                                        String.valueOf(product.productVariants().get(0).price())));
+                                        url,
+                                        price));
                             } else {
                                 Log.e(TAG, "The Category ID " + categoryIdToQuery + " doesn't exist in our model");
                             }
@@ -188,6 +200,7 @@ public class MainActivity extends GlobalActivity implements PlaceSelectionListen
 
         final ApolloCall<AllCategoriesSearchQuery.Data> categoriesCall = GlobalApp.getInstance().apolloClient()
                 .query(categoryQuery);
+
         categoriesCall.enqueue(new ApolloCall.Callback<AllCategoriesSearchQuery.Data>() {
             @Override
             public void onResponse(@Nonnull Response<AllCategoriesSearchQuery.Data> response) {
@@ -309,7 +322,7 @@ public class MainActivity extends GlobalActivity implements PlaceSelectionListen
                 });
     }
 
-    public void showProgress(final boolean show) {
+    private void showProgress(final boolean show) {
         mProgressBar.setVisibility(show ? View.VISIBLE : View.GONE);
         mProgressLabel.setVisibility(show ? View.VISIBLE : View.GONE);
     }
