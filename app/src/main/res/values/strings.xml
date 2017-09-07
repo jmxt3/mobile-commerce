@@ -2,6 +2,7 @@
     <string name="app_name">ZX Ventures</string>
     <string name="actionbar_main_activity_title">Delivery Address</string>
     <string name="actionbar_products_activity_title">Products List</string>
+    <string name="actionbar_product_details_activity_title">Product Details</string>
     <string name="action_settings">Settings</string>
     <string name="loading">Loading</string>
     <string name="main_screen_address_hint">Address</string>
@@ -10,6 +11,7 @@
     <string name="product_screen_title">Hey, Machete.</string>
     <string name="product_screen_subtitle">Shop now and anjoy the discounts.</string>
     <string name="poc_not_found_error">Desculpe, não conseguimos encontrar nenhum vendedor neste endereço. Para fins de teste, digite "Rua Américo Brasiliense, São Paulo"</string>
+    <string name="loren_ipsun">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</string>
 
     <!-- Address format -->
     <string name="address_output_string">%1$s %2$s %3$s</string>

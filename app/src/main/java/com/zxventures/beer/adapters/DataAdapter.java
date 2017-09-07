@@ -1,6 +1,7 @@
 package com.zxventures.beer.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -12,7 +13,10 @@ import android.widget.TextView;
 
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
+import com.zxventures.beer.GlobalApp;
 import com.zxventures.beer.R;
+import com.zxventures.beer.activities.ProductDetailActivity;
+import com.zxventures.beer.activities.ProductsListActivity;
 import com.zxventures.beer.models.ProductModel;
 import com.zxventures.beer.utils.ImageUtils;
 import com.zxventures.beer.utils.Log;
@@ -77,7 +81,11 @@ public class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder> {
         return data.size();
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+
+        public static final String ARG_POSITION = "position";
+        public static final String ARG_PRODUCTS = "products";
+
         private TextView price;
         private TextView title;
         private ImageView img;
@@ -88,6 +96,19 @@ public class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder> {
             price = view.findViewById(R.id.price);
             title = view.findViewById(R.id.title);
             img = view.findViewById(R.id.img);
+
+            view.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View view) {
+
+            Intent intent = new Intent(context, ProductDetailActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.putExtra(ARG_PRODUCTS, GlobalApp.getInstance().getGson().toJson(data));
+            intent.putExtra(ARG_POSITION, getAdapterPosition());
+
+            context.startActivity(intent);
         }
     }
 }

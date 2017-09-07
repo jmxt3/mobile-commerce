@@ -40,7 +40,7 @@ import java.util.List;
 public class TabFragment extends Fragment {
 
     private static final String TAG = TabFragment.class.getSimpleName();
-    private static final String ARG_POSITION = "position";
+    public static final String ARG_POSITION = "position";
     public static final String ARG_PRODUCTS = "products";
 
     private List<ProductModel> products;
@@ -71,7 +71,6 @@ public class TabFragment extends Fragment {
                     new TypeToken<List<ProductModel>>() {
                     }.getType());
         }
-
     }
 
     @Override
