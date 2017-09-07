@@ -140,12 +140,12 @@ public class MainActivity extends GlobalActivity implements PlaceSelectionListen
                                 String url = "";
                                 String price = "0";
                                 try {
-                                    if (product.productVariants().isEmpty() || product.productVariants().size()!=0) {
+                                    if (product.productVariants().isEmpty() || product.productVariants().size() != 0) {
                                         url = product.productVariants().get(0).imageUrl();
                                         price = String.valueOf(product.productVariants().get(0).price());
                                     }
                                 } catch (NullPointerException e) {
-                                    Log.e(TAG, product.productVariants().toString(),e);
+                                    Log.e(TAG, product.productVariants().toString(), e);
                                 }
                                 temp.products.add(new ProductModel(
                                         Integer.valueOf(product.id()),
@@ -156,6 +156,8 @@ public class MainActivity extends GlobalActivity implements PlaceSelectionListen
                                 Log.e(TAG, "The Category ID " + categoryIdToQuery + " doesn't exist in our model");
                             }
                         }
+                    }else{
+                        pocModel.categories.remove(categoryIdToQuery);
                     }
                 } catch (NullPointerException e) {
                     Log.e(TAG, "NullPointerException", e);
@@ -171,6 +173,7 @@ public class MainActivity extends GlobalActivity implements PlaceSelectionListen
                 processedCounter--;
 
                 if (processedCounter <= 0) {
+
                     runOnUiThread(() -> {
                         showProgress(false);
                         Toast.makeText(MainActivity.this, "Address: " + pocModel.full_address +
