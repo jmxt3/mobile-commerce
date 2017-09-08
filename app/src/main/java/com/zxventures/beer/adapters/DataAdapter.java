@@ -16,7 +16,6 @@ import com.squareup.picasso.Picasso;
 import com.zxventures.beer.GlobalApp;
 import com.zxventures.beer.R;
 import com.zxventures.beer.activities.ProductDetailActivity;
-import com.zxventures.beer.activities.ProductsListActivity;
 import com.zxventures.beer.models.ProductModel;
 import com.zxventures.beer.utils.ImageUtils;
 import com.zxventures.beer.utils.Log;
@@ -30,7 +29,7 @@ import java.util.List;
 public class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder> {
 
     private static final String TAG = DataAdapter.class.getSimpleName();
-    private static final String FAKE_IMG_URL = "http://wwww.google.com/img.jpg";
+    private static final String FAKE_IMG_URL = "https://s3-us-west-2.amazonaws.com/ze-delivery/upload/images/592de3ed8977d.jpg";
 
     private List<ProductModel> data;
     private Context context;
@@ -64,7 +63,6 @@ public class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder> {
             Picasso.with(context).invalidate(url);
             Picasso.with(context)
                     .load(url)
-                    .networkPolicy(NetworkPolicy.OFFLINE)
                     .resize(imgSize, imgSize)
                     .centerCrop()
                     .placeholder(R.mipmap.ic_sync)

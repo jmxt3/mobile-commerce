@@ -7,7 +7,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.gson.reflect.TypeToken;
-import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 import com.zxventures.beer.GlobalApp;
 import com.zxventures.beer.R;
@@ -60,7 +59,6 @@ public class ProductDetailActivity extends GlobalActivity {
             Picasso.with(this).invalidate(url);
             Picasso.with(this)
                     .load(url)
-                    .networkPolicy(NetworkPolicy.OFFLINE)
                     .resize(imgSize, imgSize)
                     .centerCrop()
                     .placeholder(R.mipmap.ic_sync)
