@@ -1,0 +1,15 @@
+query pocSearchMethod($now: DateTime!, $algorithm: String!, $lat: String!, $lgt: String!) {
+  pocSearch(now: $now, algorithm: $algorithm, lat: $lat, long: $lgt) {
+    __typename
+    id
+    status
+    tradingName
+    address{
+      address1
+      number
+      city
+      province
+      zip
+    }
+  }
+}
